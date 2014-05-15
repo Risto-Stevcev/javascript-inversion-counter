@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Inversion Counter</title>
+  <style>
+    #container { width: 800px; border: 1px solid black; margin-left: auto; margin-right: auto; }
+  </style>
+  <script src="inversion-counter.js" type="text/javascript" charset="utf-8"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready( function() {
+      var result = "";
+      $("#listfile").change( function() {
+        var reader = new FileReader();
+        reader.onload = function() {
+          result = this.result;
+        }
+        reader.readAsText( this.files[0] );
+      });
+      $("#run").click(function() {
+        var list = new Array();
+        list = result.split("\n");
+        for (i in list) {
+          list[i] = parseInt( list[i], 10 );
+        };
+        if (isNaN( list[list.length-1] ))
+            list.pop();
+        console.time("timing foo");
+        list = inversionCounter( list );
+        console.timeEnd("timing foo");
+        $("#result").html( "Inversions: " + inversions );
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="container">
+  <div id="options">
+    <p><b>List file: </b>
+    <input type="file" id="listfile" name="listfile" enctype="multipart/form-data" autocomplete="off" />
+    </p>
+    <p><a href="#" id="run">Run</a></p>
+  </div>
+  <div id="result">Result</div>
+  </div>
+</body>
+</html>
